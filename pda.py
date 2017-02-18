@@ -4,7 +4,7 @@
 import copy
 
 from automaton import Automaton
-import exceptions
+import exc as exceptions
 from stack import PDAStack
 from collections import deque
 
