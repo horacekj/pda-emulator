@@ -143,8 +143,6 @@ class PDA(Automaton):
                         if (new_state, new_stack, index) not in visited:
                             states.append((new_state, new_stack, index))
 
-                        return False
-
             if index == len(input_str):
                 continue
             input_symbol = input_str[index]
