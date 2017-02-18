@@ -48,31 +48,8 @@ class PDA(Automaton):
                 start_state, input_symbol)
             for symbol_path in symbol_paths:
                 for stack_symbol in symbol_path:
-                    self._validate_transition_isolated_lambda_transitions(
-                        start_state, input_symbol, stack_symbol)
                     self._validate_transition_invalid_stack_symbols(
                         start_state, stack_symbol)
-
-    def _validate_transition_lambda_transition_sibling(self, start_state,
-                                                       sib_path):
-        """Check the given sibling path for adjacent lambda transitions."""
-        for other_stack_symbol in sib_path:
-            if (other_stack_symbol in
-                    self.transitions[start_state]['']):
-                raise exceptions.NondeterminismError(
-                    'A symbol transition is adjacent to a '
-                    'lambda transition for this DPDA.')
-
-    def _validate_transition_isolated_lambda_transitions(self, start_state,
-                                                         input_symbol,
-                                                         stack_symbol):
-        """Raise an error if a lambda transition has no sibling transitions."""
-        if input_symbol == '':
-            sib_transitions = self.transitions[start_state]
-            for sib_input_symbol, sib_path in sib_transitions.items():
-                if sib_input_symbol != '':
-                    self._validate_transition_lambda_transition_sibling(
-                        start_state, sib_path)
 
     def _validate_transition_invalid_input_symbols(self, start_state,
                                                    input_symbol):
