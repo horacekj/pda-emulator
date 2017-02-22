@@ -95,12 +95,6 @@ class PDA(Automaton):
         self._validate_final_states()
         return True
 
-    def _replace_stack_top(self, stack, new_stack_top):
-        if new_stack_top == '':
-            stack.pop()
-        else:
-            stack.replace(new_stack_top)
-
     def validate_input(self, input_str):
         """
         Check if the given string is accepted by this PDA via BFS algorithm.
@@ -116,6 +110,9 @@ class PDA(Automaton):
             if index == len(input_str) and state in self.final_states:
                 return True
 
+            if len(stack) == 0:
+                continue
+
             if index > len(input_str):
                 continue
 
@@ -127,7 +124,7 @@ class PDA(Automaton):
                     if stack_symbol in path:
                         new_stack = stack.copy()
                         new_state, new_stack_top = path[stack_symbol]
-                        self._replace_stack_top(new_stack, new_stack_top)
+                        new_stack.replace(new_stack_top)
 
                         if (new_state, new_stack, index) not in visited:
                             states.append((new_state, new_stack, index))
@@ -143,7 +140,7 @@ class PDA(Automaton):
                     if stack_symbol in path:
                         new_stack = stack.copy()
                         new_state, new_stack_top = path[stack_symbol]
-                        self._replace_stack_top(new_stack, new_stack_top)
+                        new_stack.replace(new_stack_top)
 
                         if (new_state, new_stack, index+1) not in visited:
                             states.append((new_state, new_stack, index+1))
