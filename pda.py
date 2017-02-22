@@ -43,13 +43,22 @@ class PDA(Automaton):
 
     def _validate_transition_invalid_symbols(self, start_state, paths):
         """Raise an error if transition symbols are invalid."""
+        self._validate_transition_invalid_state(start_state)
         for input_symbol, symbol_paths in paths.items():
             self._validate_transition_invalid_input_symbols(
                 start_state, input_symbol)
             for symbol_path in symbol_paths:
-                for stack_symbol in symbol_path:
+                for stack_symbol, (new_state, new_stack) in symbol_path.items():
                     self._validate_transition_invalid_stack_symbols(
                         start_state, stack_symbol)
+                    self._validate_transition_invalid_state(new_state)
+
+    def _validate_transition_invalid_state(self, state):
+        """Raise an error if state are invalid."""
+        if state not in self.states:
+            raise exceptions.InvalidStateError(
+                'state {} does not exist'.format(
+                    state))
 
     def _validate_transition_invalid_input_symbols(self, start_state,
                                                    input_symbol):
