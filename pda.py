@@ -52,6 +52,9 @@ class PDA(Automaton):
                     self._validate_transition_invalid_stack_symbols(
                         start_state, stack_symbol)
                     self._validate_transition_invalid_state(new_state)
+                    for stack_symbol in new_stack:
+                        self._validate_transition_invalid_stack_symbols(
+                            start_state, stack_symbol)
 
     def _validate_transition_invalid_state(self, state):
         """Raise an error if state are invalid."""
